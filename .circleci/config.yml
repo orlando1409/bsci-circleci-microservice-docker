@@ -35,6 +35,7 @@ jobs:
             ls
             mvn clean install
   build_push_image:
+    working_directory: ~/bsci-circleci-microservice-dockerks
     docker:
       - image: circleci/openjdk:11.0.1-jdk
     steps:
