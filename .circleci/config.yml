@@ -9,10 +9,7 @@ workflows:
           settings_file: settings.xml  
   build-test-deploy:
     jobs:
-      - run:
-          name: Pre-Build
-          command: |
-            ./gradlew build && java -jar build/libs/gs-spring-boot-docker-0.1.0.jar
+      - build_test
       # - building & pushing image to ECR
       - aws-ecr/build-and-push-image:
           repo: ${CIRCLE_PROJECT_REPONAME}
@@ -20,3 +17,13 @@ workflows:
           account-url: AWS_ECR_ACCOUNT_URL_ENV_VAR_NAME
           tag: ${CIRCLE_BUILD_NUM}
           create-repo: true 
+jobs:
+  build_test:
+    docker:
+      - image: openjdk:8-jdk-alpine
+    steps:
+      - checkout
+      - run:
+          name: Setup VirtualEnv
+          command: |
+            ./gradlew build && java -jar build/libs/gs-spring-boot-docker-0.1.0.jar
