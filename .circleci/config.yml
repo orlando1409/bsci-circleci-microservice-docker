@@ -9,7 +9,7 @@ workflows:
           settings_file: settings.xml  
   build-test-deploy:
     jobs:
-      # - test
+      - test
       # - building & pushing image to ECR
       - build_push_image:
           requires:
