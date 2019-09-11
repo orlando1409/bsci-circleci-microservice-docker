@@ -17,6 +17,8 @@ workflows:
           account-url: AWS_ECR_ACCOUNT_URL_ENV_VAR_NAME
           tag: ${CIRCLE_BUILD_NUM}
           create-repo: true 
+          requires:
+            - build_test
 jobs:
   build_test:
     docker:
