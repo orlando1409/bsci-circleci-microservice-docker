@@ -25,17 +25,17 @@ workflows:
 jobs:
   test:
     docker:
-      - image: openjdk:8-jdk-alpinegs-spring-boot-docker-0.1.0.jar
+      - image: openjdk:8-jdk-stretch
     steps:
       - checkout
       - run:
           name: Setup VirtualEnv
           command: |
             ls
-            ./gradlew build && java -jar build/libs/${CIRCLE_PROJECT_REPONAME}
+            ./gradlew build && java -jar build/libs/${CIRCLE_PROJECT_REPONAME}-0.1.0.jar
   build_push_image:
     docker:
-      - image: openjdk:8-jdk-alpine
+      - image: openjdk:8-jdk-stretch
     steps:
       - checkout
       - setup_remote_docker:
