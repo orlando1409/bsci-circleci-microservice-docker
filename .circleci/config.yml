@@ -24,6 +24,7 @@ workflows:
             - test
 jobs:
   test:
+    working_directory: ~/bsci-circleci-microservice-docker
     docker:
       - image: openjdk:8-jdk-stretch
     steps:
