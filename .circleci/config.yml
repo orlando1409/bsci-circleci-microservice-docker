@@ -25,7 +25,7 @@ workflows:
 jobs:
   test:
     docker:
-      - image: openjdk:8-jdk-alpine
+      - image: openjdk:8-jdk-alpinegs-spring-boot-docker-0.1.0.jar
     steps:
       - checkout
       - run:
