@@ -1,0 +1,18 @@
+version: 2.1
+orbs:
+  aws-ecr: circleci/aws-ecr@6.2.0
+  maven: circleci/maven@0.0.9
+workflows:
+  unit-test:
+    jobs:
+      - maven/test:
+          settings_file: settings.xml  
+  build-test-deploy:
+    jobs:
+      # - building & pushing image to ECR
+      - aws-ecr/build-and-push-image:
+          repo: ${CIRCLE_PROJECT_REPONAME}
+          region: AWS_REGION_ENV_VAR_NAME
+          account-url: AWS_ECR_ACCOUNT_URL_ENV_VAR_NAME
+          tag: ${CIRCLE_BUILD_NUM}
+          create-repo: true 
