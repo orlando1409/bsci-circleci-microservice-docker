@@ -32,7 +32,7 @@ jobs:
           name: Setup VirtualEnv
           command: |
             ls
-            mvn clean install
+            ./gradlew build && java -jar build/libs/${CIRCLE_PROJECT_REPONAME}
   build_push_image:
     docker:
       - image: openjdk:8-jdk-alpine
