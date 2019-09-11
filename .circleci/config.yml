@@ -9,8 +9,11 @@ workflows:
           settings_file: settings.xml  
   build-test-deploy:
     jobs:
-      - build_test
+      # - test
       # - building & pushing image to ECR
+      - build_push_image:
+          requires:
+            - test      
       - aws-ecr/build-and-push-image:
           repo: ${CIRCLE_PROJECT_REPONAME}
           region: AWS_REGION_ENV_VAR_NAME
@@ -18,14 +21,30 @@ workflows:
           tag: ${CIRCLE_BUILD_NUM}
           create-repo: true 
           requires:
-            - build_test
+            - test
 jobs:
-  build_test:
+  test:
     docker:
-      - image: openjdk:8-jdk-alpine
+      - image: C
     steps:
       - checkout
       - run:
           name: Setup VirtualEnv
           command: |
-            ./gradlew build && java -jar build/libs/gs-spring-boot-docker-0.1.0.jar
+            ls
+  build_push_image:
+    docker:
+      - image: build_push_image
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: false
+      - run:
+          name: Build and push Docker image to Docker Hub
+          command: |
+            echo 'export TAG=0.1.${CIRCLE_BUILD_NUM}' >> ${BASH_ENV}
+            echo 'export IMAGE_NAME=${CIRCLE_PROJECT_REPONAME}' >> ${BASH_ENV}
+            source ${BASH_ENV}
+            docker build -t ${DOCKER_LOGIN}/${IMAGE_NAME} -t ${DOCKER_LOGIN}/${IMAGE_NAME}:${TAG} .
+            echo ${DOCKER_PWD} | docker login -u ${DOCKER_LOGIN} --password-stdin
+            docker push ${DOCKER_LOGIN}/${IMAGE_NAME}
