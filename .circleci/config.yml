@@ -34,7 +34,6 @@ jobs:
           command: |
             ls
             mvn clean install
-            mv ./target/bsci*.jar ./build/libs
   build_push_image:
     docker:
       - image: circleci/openjdk:11.0.1-jdk
