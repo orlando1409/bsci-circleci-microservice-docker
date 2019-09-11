@@ -34,7 +34,7 @@ jobs:
             ls
   build_push_image:
     docker:
-      - image: build_push_image
+      - image: openjdk:8-jdk-alpine
     steps:
       - checkout
       - setup_remote_docker:
