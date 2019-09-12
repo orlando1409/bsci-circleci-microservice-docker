@@ -1,20 +1,14 @@
 FROM openjdk:8-jdk-alpine
 ##VOLUME /tmp
-RUN apk add maven
-COPY src ./src
-COPY pom.xml .
-RUN mvn clean install
 RUN ls
-#RUN mkdir -p /target/dependency/
-#RUN ls ./target/dependency
-#COPY target/dependency ./target/dependency
+RUN mkdir -p /target/dependency/
+RUN ls ./target/dependency
+COPY target/dependency ./target/dependency
 RUN ls ./target/dependency
 ARG DEPENDENCY=/target/dependency
-RUN ls ./target/dependency/BOOT-INF/
-RUN ls ./${DEPENDENCY}/BOOT-INF/
-COPY ./${DEPENDENCY}/BOOT-INF/lib /app/lib
-COPY ./${DEPENDENCY}/META-INF /app/META-INF
-COPY ./${DEPENDENCY}/BOOT-INF/classes /app
+COPY ${DEPENDENCY}/BOOT-INF/lib /app/lib
+COPY ${DEPENDENCY}/META-INF /app/META-INF
+COPY ${DEPENDENCY}/BOOT-INF/classes /app
 ENTRYPOINT ["java","-cp","app:app/lib/*","hello.Application"]
 
 
