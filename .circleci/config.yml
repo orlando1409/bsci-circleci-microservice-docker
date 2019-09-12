@@ -3,18 +3,14 @@ orbs:
   aws-ecr: circleci/aws-ecr@6.2.0
   maven: circleci/maven@0.0.9
 workflows:
-  # unit-test:
-  #   jobs:
-  #     - maven/test:
-  #         settings_file: settings.xml  
-  build-test-deploy:
+  build-deploy:
     jobs:
-      - build
-      # - maven/test:
-      #     settings_file: settings.xml  
-      # - build_push_image:
-      #     requires:
-      #       - maven/test      
+      - build:
+          branches:
+            only:
+              - master
+              # - dev
+              - qa      
       - aws-ecr/build-and-push-image:
           repo: ${CIRCLE_PROJECT_REPONAME}
           region: AWS_REGION_ENV_VAR_NAME
@@ -24,10 +20,13 @@ workflows:
           attach-workspace: true
           requires:
             - build
-            # - maven/test
+          branches:
+            only:
+              - master
+              # - dev
+              - qa             
 jobs:
   build:
-    working_directory: ~/bsci-circleci-microservice-docker
     docker:
       - image: circleci/openjdk:11.0.1-jdk
     steps:
@@ -35,32 +34,10 @@ jobs:
       - run:
           name: Build
           command: |
-            ls
             mvn clean install
-            ls target/dependency
       - persist_to_workspace:
           root: .
           paths:
-            - target/dependency/BOOT-INF
+            - target/dependency/BOOT-INF/lib
             - target/dependency/META-INF
-            # - target/dependency/BOOT-INF/lib
-            # - target/dependency/META-INF
-            # - target/dependency/BOOT-INF/classes
-  # build_push_image:
-  #   working_directory: ~/bsci-circleci-microservice-docker
-  #   docker:
-  #     - image: circleci/openjdk:11.0.1-jdk
-  #   steps:
-  #     - checkout
-  #     - setup_remote_docker:
-  #         docker_layer_caching: true
-  #     - run:
-  #         name: Build and push Docker image to Docker Hub
-  #         command: |
-  #           mvn clean install
-  #           echo 'export TAG=0.1.${CIRCLE_BUILD_NUM}' >> ${BASH_ENV}
-  #           echo 'export IMAGE_NAME=${CIRCLE_PROJECT_REPONAME}' >> ${BASH_ENV}
-  #           source ${BASH_ENV}
-  #           docker build -t ${DOCKER_LOGIN}/${IMAGE_NAME} -t ${DOCKER_LOGIN}/${IMAGE_NAME}:${TAG} .
-  #           echo ${DOCKER_PWD} | docker login -u ${DOCKER_LOGIN} --password-stdin
-  #           docker push ${DOCKER_LOGIN}/${IMAGE_NAME}
+            - target/dependency/BOOT-INF/classes
