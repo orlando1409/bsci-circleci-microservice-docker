@@ -1,4 +1,3 @@
-#
 version: 2.1
 orbs:
   aws-ecr: circleci/aws-ecr@6.2.0
@@ -33,17 +32,17 @@ jobs:
       - image: circleci/openjdk:11.0.1-jdk
     steps:
       - checkout
+      - run:
+          name: Build
+          command: |
+            ls
+            mvn clean install
       - persist_to_workspace:
           root: /target/dependency
           paths:
             - BOOT-INF/lib
             - META-INF
             - BOOT-INF/classes
-      - run:
-          name: Build
-          command: |
-            ls
-            mvn clean install
   # build_push_image:
   #   working_directory: ~/bsci-circleci-microservice-docker
   #   docker:
