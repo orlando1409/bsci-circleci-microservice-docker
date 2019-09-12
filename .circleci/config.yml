@@ -41,9 +41,11 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - target/dependency/BOOT-INF/lib
+            - target/dependency/BOOT-INF
             - target/dependency/META-INF
-            - target/dependency/+BOOT-INF/classes
+            # - target/dependency/BOOT-INF/lib
+            # - target/dependency/META-INF
+            # - target/dependency/BOOT-INF/classes
   # build_push_image:
   #   working_directory: ~/bsci-circleci-microservice-docker
   #   docker:
