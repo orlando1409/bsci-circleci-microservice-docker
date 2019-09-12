@@ -5,13 +5,13 @@ orbs:
 workflows:
   build-deploy:
     jobs:
-      - build:
-          filters:
-            branches:
-              only:
-                - master
-                # - dev
-                - qa      
+      - build
+          # filters:
+          #   branches:
+          #     only:
+          #       - master
+          #       # - dev
+          #       - qa      
       - aws-ecr/build-and-push-image:
           repo: ${CIRCLE_PROJECT_REPONAME}
           region: AWS_REGION_ENV_VAR_NAME
