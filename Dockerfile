@@ -1,5 +1,6 @@
 FROM openjdk:8-jdk-alpine
 ##VOLUME /tmp
+RUN ls
 RUN mkdir -p /target/dependency/
 RUN ls ./target/dependency
 COPY target/dependency ./target/dependency
