@@ -37,6 +37,7 @@ jobs:
           command: |
             ls
             mvn clean install
+            ls
       - persist_to_workspace:
           root: /target/dependency
           paths:
