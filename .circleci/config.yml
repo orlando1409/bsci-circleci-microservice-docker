@@ -9,7 +9,7 @@ workflows:
   #         settings_file: settings.xml  
   build-test-deploy:
     jobs:
-      - build          
+      - build
       # - maven/test:
       #     settings_file: settings.xml  
       # - build_push_image:
@@ -27,10 +27,17 @@ workflows:
             # - maven/test
 jobs:
   build:
+    working_directory: ~/bsci-circleci-microservice-docker
     docker:
       - image: circleci/openjdk:11.0.1-jdk
     steps:
       - checkout
+      - persist_to_workspace:
+          root: /target/dependency
+          paths:
+            - BOOT-INF/lib
+            - META-INF
+            - BOOT-INF/classes
       - run:
           name: Build
           command: |
