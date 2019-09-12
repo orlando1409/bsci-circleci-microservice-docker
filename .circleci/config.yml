@@ -39,11 +39,11 @@ jobs:
             mvn clean install
             ls target/dependency
       - persist_to_workspace:
-          root: /target/dependency
+          root: .
           paths:
-            - BOOT-INF/lib
-            - META-INF
-            - BOOT-INF/classes
+            - target/dependency/BOOT-INF/lib
+            - target/dependency/META-INF
+            - target/dependency/+BOOT-INF/classes
   # build_push_image:
   #   working_directory: ~/bsci-circleci-microservice-docker
   #   docker:
