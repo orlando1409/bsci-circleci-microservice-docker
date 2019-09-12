@@ -9,12 +9,11 @@ workflows:
           settings_file: settings.xml  
   build-test-deploy:
     jobs:
-      - test:
       - maven/test:
           settings_file: settings.xml  
       - build_push_image:
           requires:
-            - test      
+            - maven/test      
       - aws-ecr/build-and-push-image:
           repo: ${CIRCLE_PROJECT_REPONAME}
           region: AWS_REGION_ENV_VAR_NAME
@@ -22,19 +21,8 @@ workflows:
           tag: ${CIRCLE_BUILD_NUM}
           create-repo: true 
           requires:
-            - test
+            - maven/test
 jobs:
-  test:
-    working_directory: ~/bsci-circleci-microservice-docker
-    docker:
-      - image: circleci/openjdk:11.0.1-jdk
-    steps:
-      - checkout
-      - run:
-          name: Setup VirtualEnv
-          command: |
-            ls
-            #mvn clean install
   build_push_image:
     working_directory: ~/bsci-circleci-microservice-docker
     docker:
