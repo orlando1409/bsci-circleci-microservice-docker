@@ -10,11 +10,11 @@ workflows:
   build-test-deploy:
     jobs:
       - build
-      - maven/test:
-          settings_file: settings.xml  
-      - build_push_image:
-          requires:
-            - maven/test      
+      # - maven/test:
+      #     settings_file: settings.xml  
+      # - build_push_image:
+      #     requires:
+      #       - maven/test      
       - aws-ecr/build-and-push-image:
           repo: ${CIRCLE_PROJECT_REPONAME}
           region: AWS_REGION_ENV_VAR_NAME
