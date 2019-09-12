@@ -11,7 +11,7 @@ public class Application {
 
     @RequestMapping("/")
     public String home() {
-        return "Hello Docker from CircleCI DevOps pipeline";
+        return "Hello Docker from CircleCI.";
     }
 
     public static void main(String[] args) {

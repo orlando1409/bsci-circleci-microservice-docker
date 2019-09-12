@@ -9,13 +9,14 @@ workflows:
           settings_file: settings.xml  
   build-test-deploy:
     jobs:
-      - test
-      # - building & pushing image to ECR
+      - test:
+      - maven/test:
+          settings_file: settings.xml  
       - build_push_image:
           requires:
             - test      
       - aws-ecr/build-and-push-image:
-          repo: ${CIRCLE_PROJECT_REPONAME
+          repo: ${CIRCLE_PROJECT_REPONAME}
           region: AWS_REGION_ENV_VAR_NAME
           account-url: AWS_ECR_ACCOUNT_URL_ENV_VAR_NAME
           tag: ${CIRCLE_BUILD_NUM}
