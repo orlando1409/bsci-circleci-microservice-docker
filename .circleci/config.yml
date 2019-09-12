@@ -33,7 +33,7 @@ jobs:
           name: Setup VirtualEnv
           command: |
             ls
-            mvn clean install
+            #mvn clean install
   build_push_image:
     working_directory: ~/bsci-circleci-microservice-docker
     docker:
@@ -45,6 +45,7 @@ jobs:
       - run:
           name: Build and push Docker image to Docker Hub
           command: |
+            mvn clean install
             echo 'export TAG=0.1.${CIRCLE_BUILD_NUM}' >> ${BASH_ENV}
             echo 'export IMAGE_NAME=${CIRCLE_PROJECT_REPONAME}' >> ${BASH_ENV}
             source ${BASH_ENV}
