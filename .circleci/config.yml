@@ -24,7 +24,7 @@ workflows:
           # branches:
           #   only:
           #     - master
-          #     # - dev
+          #     - dev
           #     - qa             
 jobs:
   build:
